@@ -1,0 +1,7 @@
+boto3>=1.40
+pillow>=11
+pydantic>=2.9
+strands-agents>=1.10
+bedrock-agentcore>=1.0
+qrcode>=8
+python-dotenv>=1.0

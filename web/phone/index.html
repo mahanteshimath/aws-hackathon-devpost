@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fff6e5">
+  <title>Crayon Cinema · Phone</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main>
+    <header>
+      <div class="logo" aria-hidden="true"><span></span><span></span><span></span></div>
+      <h1>Crayon Cinema</h1>
+    </header>
+
+    <!-- Code entry (if opened without a session link) -->
+    <section id="join" class="card" hidden>
+      <h2>Enter the code on your TV</h2>
+      <form id="join-form">
+        <input id="join-code" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD" aria-label="4-letter code">
+        <button class="primary" type="submit">Connect</button>
+      </form>
+      <p id="join-error" class="error" role="alert"></p>
+    </section>
+
+    <!-- Capture -->
+    <section id="capture" class="card" hidden>
+      <p id="connected" class="connected">Connected to your TV</p>
+      <label class="snap" id="snap-label">
+        <input id="photo" type="file" accept="image/*" capture="environment">
+        <img id="preview" alt="Your drawing" hidden>
+        <span id="snap-text"><b>Snap the drawing</b><br>Lay it flat in good light</span>
+      </label>
+
+      <label class="field">Child's first name <small>(optional)</small>
+        <input id="kid-name" maxlength="20" autocomplete="off" placeholder="e.g. Maya">
+      </label>
+
+      <fieldset class="themes">
+        <legend>Where should the story go?</legend>
+        <label><input type="radio" name="theme" value="surprise" checked><span>✨ Surprise me</span></label>
+        <label><input type="radio" name="theme" value="space"><span>🚀 Space</span></label>
+        <label><input type="radio" name="theme" value="jungle"><span>🌴 Jungle</span></label>
+        <label><input type="radio" name="theme" value="ocean"><span>🐚 Ocean</span></label>
+      </fieldset>
+
+      <label class="toggle"><input id="bedtime" type="checkbox"><span>🌙 Bedtime story (calm &amp; sleepy ending)</span></label>
+
+      <button id="go" class="primary big" disabled>Bring it to life</button>
+      <p id="error" class="error" role="alert"></p>
+      <p class="privacy">We use the first name only. The photo is deleted once your hero is cut out; stories are removed after 30 days.</p>
+    </section>
+
+    <!-- Status -->
+    <section id="status" class="card" hidden>
+      <img id="status-art" alt="" class="status-art">
+      <h2 id="status-title">Look at the TV!</h2>
+      <p id="status-text">Your hero is coming to life…</p>
+      <button id="another" class="primary" hidden>Make another story</button>
+    </section>
+  </main>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

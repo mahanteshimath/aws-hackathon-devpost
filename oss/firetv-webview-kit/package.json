@@ -1,0 +1,18 @@
+{
+  "name": "firetv-webview-kit",
+  "version": "0.1.0",
+  "description": "Ship a web app to Fire TV in an afternoon: D-pad spatial navigation, a remote-key bridge for the Android WebView, and a Kotlin shell template.",
+  "type": "module",
+  "main": "src/tv-focus.js",
+  "exports": {
+    "./focus": "./src/tv-focus.js",
+    "./remote": "./src/tv-remote.js"
+  },
+  "files": ["src", "android-template", "examples"],
+  "scripts": {
+    "test": "node --test test/"
+  },
+  "keywords": ["fire-tv", "firetv", "android-tv", "10-foot-ui", "spatial-navigation", "d-pad", "webview", "smart-tv"],
+  "license": "MIT",
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,44 @@
+# Secrets - never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.keystore
+*.jks
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+*.egg-info/
+build/
+dist/
+
+# Node
+node_modules/
+
+# Android / Gradle
+.gradle/
+firetv-app/app/build/
+firetv-app/build/
+oss/firetv-webview-kit/android-template/app/build/
+oss/firetv-webview-kit/android-template/build/
+oss/firetv-webview-kit/android-template/.gradle/
+local.properties
+*.apk
+*.aab
+captures/
+.idea/
+*.iml
+
+# Local runtime data and tools
+.data/
+.tools/
+infra/outputs.json
+.bedrock_agentcore.yaml
+.bedrock_agentcore/
+
+# OS / IDE
+.DS_Store
+.snowflake/

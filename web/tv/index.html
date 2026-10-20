@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Crayon Cinema</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div id="stage">
+    <div class="paper-grain" aria-hidden="true"></div>
+    <div class="stars" aria-hidden="true"></div>
+
+    <!-- HOME: pair a phone + Story Shelf -->
+    <section id="home" class="screen" aria-label="Home">
+      <header class="brand">
+        <div class="logo" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div>
+          <h1>Crayon Cinema</h1>
+          <p class="tagline">Tonight's story stars whatever you drew today.</p>
+        </div>
+      </header>
+
+      <div class="pair-card">
+        <div class="qr-wrap"><img id="qr" alt="QR code to connect your phone"></div>
+        <ol class="steps">
+          <li><b>Draw</b> a hero on paper.</li>
+          <li><b>Scan</b> this code with a phone.</li>
+          <li><b>Snap</b> the drawing and watch it come alive!</li>
+        </ol>
+        <div class="pair-status">
+          <span id="phone-dot" class="dot"></span>
+          <span id="phone-status">Waiting for a phone…</span>
+          <span class="code">Code <b id="pair-code">····</b></span>
+        </div>
+      </div>
+
+      <div class="home-art" aria-hidden="true">
+        <div class="sheet"></div>
+        <img class="pop" src="./demo/sprite.png" alt="">
+        <div class="bubble">Draw me!</div>
+        <i class="crayon c1"></i><i class="crayon c2"></i>
+      </div>
+
+      <div class="shelf">
+        <h2>Story Shelf</h2>
+        <div id="shelf-row" class="shelf-row">
+          <button class="shelf-card demo-card" data-focus data-focus-default data-focus-group="shelf" id="demo-btn">
+            <span class="demo-art" aria-hidden="true"></span>
+            <span class="shelf-title">Watch a sample story</span>
+          </button>
+        </div>
+      </div>
+      <div id="mode-badge" class="mode-badge"></div>
+    </section>
+
+    <!-- MAKING: before the hero is cast -->
+    <section id="making" class="screen" aria-label="Making your story">
+      <div class="magic">
+        <div class="crayon-spinner" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <h2>Bringing your hero to life…</h2>
+        <ul class="progress" id="progress">
+          <li data-step="casting">Looking at your drawing</li>
+          <li data-step="cast">Cutting it out of the paper</li>
+          <li data-step="writing">Writing tonight's story</li>
+          <li data-step="rendering">Painting the world</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- REVEAL: the drawing jumps off the paper -->
+    <section id="reveal" class="screen" aria-label="Meet your hero">
+      <div class="spotlight" aria-hidden="true"></div>
+      <div class="confetti" id="confetti" aria-hidden="true"></div>
+      <div class="reveal-hero"><img id="reveal-sprite" alt=""></div>
+      <div class="name-card">
+        <p class="meet">Meet</p>
+        <h2 id="reveal-name"></h2>
+        <p id="reveal-greeting" class="read-along"></p>
+      </div>
+      <div class="hint" id="reveal-hint">Writing your story…</div>
+    </section>
+
+    <!-- PLAYER -->
+    <section id="player" class="screen" aria-label="Story">
+      <div class="scene"><img id="bg-a" class="bg" alt=""><img id="bg-b" class="bg" alt=""></div>
+      <div class="hero-lane"><div id="hero" class="hero"><img id="hero-img" alt=""></div></div>
+      <div class="story-title" id="story-title"></div>
+      <div class="text-card">
+        <p id="page-text" class="read-along"></p>
+        <div class="page-dots" id="page-dots"></div>
+      </div>
+      <div class="painting" id="painting"><div class="brush" aria-hidden="true"></div><span>Painting the next page…</span></div>
+      <div class="controls-hint">OK pause · ◀ ▶ pages · Back home</div>
+
+      <div class="choice" id="choice" aria-label="Choose what happens next">
+        <h2 id="choice-prompt"></h2>
+        <div class="choice-row">
+          <button class="choice-card" data-focus data-focus-default id="choice-a"><span class="arrow">◀</span><span class="label"></span></button>
+          <button class="choice-card" data-focus id="choice-b"><span class="label"></span><span class="arrow">▶</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- END -->
+    <section id="end" class="screen" aria-label="The end">
+      <div class="end-hero"><img id="end-sprite" alt=""></div>
+      <h2 class="the-end">The End</h2>
+      <p id="end-title" class="end-title"></p>
+      <p class="saved">Saved to your Story Shelf</p>
+      <div class="end-actions">
+        <button class="pill" data-focus data-focus-default id="again-btn">Read it again</button>
+        <button class="pill" data-focus id="new-btn">Make a new story</button>
+      </div>
+    </section>
+
+    <!-- ERROR -->
+    <section id="oops" class="screen" aria-label="Something went wrong">
+      <h2>Oops! The crayons got tangled.</h2>
+      <p id="oops-text">Let's try that drawing again.</p>
+      <button class="pill" data-focus data-focus-default id="oops-btn">Back to the start</button>
+    </section>
+  </div>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>

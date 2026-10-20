@@ -1,0 +1,55 @@
+name: ci
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r backend/requirements.txt pytest
+      - run: python -m pytest backend/tests -q
+
+  focus-kit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node --test oss/firetv-webview-kit/test/tv-focus.test.js
+
+  firetv-apk:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: android-actions/setup-android@v3
+      - name: Build APK
+        working-directory: firetv-app
+        env:
+          CRAYON_URL: ${{ vars.CRAYON_URL }}
+        run: |
+          if [ -n "$CRAYON_URL" ]; then ./gradlew assembleRelease --no-daemon -PcrayonUrl="$CRAYON_URL"
+          else ./gradlew assembleRelease --no-daemon; fi
+          cp app/build/outputs/apk/release/app-release.apk ../crayon-cinema-firetv.apk
+      - uses: actions/upload-artifact@v4
+        with:
+          name: crayon-cinema-firetv
+          path: crayon-cinema-firetv.apk
+      - name: Attach APK to release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: crayon-cinema-firetv.apk

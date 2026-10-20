@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>firetv-webview-kit demo</title>
+  <style>
+    body { margin: 0; background: #14121f; color: #fff; font: 28px system-ui, sans-serif; padding: 54px 96px; }
+    h1 { margin: 0 0 24px; }
+    .hero { height: 260px; border-radius: 24px; background: linear-gradient(120deg, #ff7a3d, #8e5be8); display: flex; align-items: center; padding: 0 48px; margin-bottom: 40px; }
+    .row { display: flex; gap: 28px; margin-bottom: 36px; }
+    .card { width: 280px; height: 160px; border-radius: 20px; background: #2a2640; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 26px; border: 0; transition: transform .15s, box-shadow .15s; }
+    .is-focused { transform: scale(1.08); box-shadow: 0 0 0 6px #ffc93d; }
+    #log { position: fixed; right: 96px; bottom: 54px; font-size: 22px; opacity: .7; }
+  </style>
+</head>
+<body>
+  <h1>firetv-webview-kit</h1>
+  <button class="hero card" style="width:100%" data-focus data-focus-default>Featured · press OK</button>
+  <div class="row">
+    <button class="card" data-focus data-focus-group="r1">Row 1 · A</button>
+    <button class="card" data-focus data-focus-group="r1">Row 1 · B</button>
+    <button class="card" data-focus data-focus-group="r1">Row 1 · C</button>
+    <button class="card" data-focus data-focus-group="r1">Row 1 · D</button>
+  </div>
+  <div class="row">
+    <button class="card" data-focus data-focus-group="r2">Row 2 · A</button>
+    <button class="card" data-focus data-focus-group="r2">Row 2 · B</button>
+    <button class="card" data-focus data-focus-group="r2" disabled>Disabled</button>
+    <button class="card" data-focus data-focus-group="r2">Row 2 · D</button>
+  </div>
+  <div id="log">Use the remote (or arrow keys)</div>
+  <script type="module">
+    import { FocusManager } from '../src/tv-focus.js';
+    import { createRemote } from '../src/tv-remote.js';
+    const fm = new FocusManager();
+    fm.focusFirst();
+    const log = document.querySelector('#log');
+    document.querySelectorAll('[data-focus]').forEach((el) => el.addEventListener('click', () => (log.textContent = `Selected: ${el.textContent}`)));
+    createRemote().on((action) => {
+      log.textContent = `Remote: ${action}`;
+      if (['up', 'down', 'left', 'right'].includes(action)) return fm.move(action), true;
+      if (action === 'select') return fm.select();
+      if (action === 'back') return false; // let the shell exit
+      return true;
+    });
+  </script>
+</body>
+</html>
