@@ -9,7 +9,9 @@ Built for the **Amazon Developer Hackathon 2026, Fire TV track**. It also enters
 > Live web build: <https://e7szjoxoeoyy3fwly4nyzjv2e40djaoh.lambda-url.us-east-1.on.aws/tv/> (arrow keys and Enter act as the remote; scan the QR with a phone)
 > Demo video: [`docs/media/crayon-cinema-pitch.mp4`](docs/media/crayon-cinema-pitch.mp4) · Devpost: _link_ · Open-source kit: [`oss/firetv-webview-kit`](oss/firetv-webview-kit)
 
-[![Crayon Cinema pitch video (21s) - click to play](docs/media/crayon-cinema-pitch.jpg)](docs/media/crayon-cinema-pitch.mp4)
+<video src="https://github.com/mahanteshimath/aws-hackathon-devpost/raw/main/docs/media/crayon-cinema-pitch.mp4" poster="https://github.com/mahanteshimath/aws-hackathon-devpost/raw/main/docs/media/crayon-cinema-pitch.jpg" controls muted width="100%"></video>
+
+<sub>If the player does not load, [open the 21s pitch video](docs/media/crayon-cinema-pitch.mp4).</sub>
 
 ---
 
