@@ -6,7 +6,10 @@ A child draws a hero on paper. A parent snaps a photo with their phone. Within s
 
 Built for the **Amazon Developer Hackathon 2026, Fire TV track**. It also enters the AWS Builder and Open Source mini challenges.
 
-> Demo video: _link_ · Devpost: _link_ · Open-source kit: [`oss/firetv-webview-kit`](oss/firetv-webview-kit)
+> Live web build: <https://e7szjoxoeoyy3fwly4nyzjv2e40djaoh.lambda-url.us-east-1.on.aws/tv/> (arrow keys and Enter act as the remote; scan the QR with a phone)
+> Demo video: [`docs/media/crayon-cinema-pitch.mp4`](docs/media/crayon-cinema-pitch.mp4) · Devpost: _link_ · Open-source kit: [`oss/firetv-webview-kit`](oss/firetv-webview-kit)
+
+[![Crayon Cinema pitch video (21s) - click to play](docs/media/crayon-cinema-pitch.jpg)](docs/media/crayon-cinema-pitch.mp4)
 
 ---
 
@@ -21,29 +24,23 @@ Screen time at bedtime usually means passive watching. Crayon Cinema turns the b
 
 ## How it works
 
-```
- Phone (any browser)              AWS (us-east-1)                                       Fire TV
- ─────────────────────            ────────────────────────────────────────────          ─────────────────────────
- scan QR on TV  ───────────────►  Lambda Function URL (API + static web app)  ◄───────  Kotlin WebView shell
- snap drawing   ── JPEG ───────►    │  S3 (private, 30-day lifecycle)                    remote → tvRemote bridge
-                                    ▼                                                    polls story doc (1 s)
-                         Amazon Bedrock AgentCore Runtime
-                           ├─ Casting agent (Strands, Amazon Nova 2 Lite, vision) ─┐
-                           ├─ Stability Remove Background (+ local check)       ─┴─► CAST REVEAL first
-                           ├─ Director agent (Strands, Amazon Nova 2 Lite)
-                           │     tool: recall_household_universe ◄── AgentCore Memory (semantic)
-                           │     → StoryPlan (pydantic structured output, 3 pages + 2 branches)
-                           ├─ Bedrock Guardrails on every text shown to a child
-                           └─ render workers (priority = what the child will see next)
-                                 ├─ Stability SD3.5 Large scenes (us-west-2; prompt names the kid's crayon colours)
-                                 └─ Polly neural narration + word speech marks (read-along)
-```
+![Crayon Cinema architecture](docs/architecture.drawio.png)
+
+*Editable source: [`docs/architecture.drawio`](docs/architecture.drawio). The PNG has the diagram embedded, so you can also open it directly in [draw.io](https://app.diagrams.net).*
+
+**Story flow, from QR scan to the child's first choice:**
+
+![Story flow sequence diagram](docs/story-flow.drawio.png)
+
+*Editable source: [`docs/story-flow.drawio`](docs/story-flow.drawio).*
 
 **Latency design.**
 - The cast reveal (cut-out, name, greeting) arrives first, which hides the story writing behind a moment of delight.
 - Pages stream to the TV as each one finishes.
 - When the child picks a branch, it jumps to the front of the render queue.
 - Measured on the deployed stack (Lambda + AgentCore, us-east-1): the hero is cast about 3 s after the upload, the story is written by about 8–9 s, and all 9 narrated pages are ready 18–20 s after the phone upload. Timings are saved per story in `timings`. (Measured with local fallback art; with Stability scenes, add about 8 s per image, 2 in parallel, in priority order.)
+
+**Look and feel.** The TV UI is a paper-craft picture-book theatre: a ticket-style pairing card, a marquee, a polaroid Story Shelf, a film-strip progress bar and a curtain reveal. Display type is Fraunces, handwriting is Caveat and body text is Fredoka. Only transforms and opacity are animated, which keeps playback smooth on stick hardware.
 
 **Why the art looks like the child's.** The hero *is* the child's drawing, cut out of the paper. Every scene prompt names the crayon colours found in the cut-out, so each world matches its hero. (This was built on Nova Canvas colour-guided generation, which has since reached end of life; see the friction log.)
 
@@ -54,13 +51,14 @@ Screen time at bedtime usually means passive watching. Crayon Cinema turns the b
 | `firetv-app/` | Fire TV app (Kotlin WebView shell). Remote-key bridge, Back handling, autoplay, bundled offline sample, LAN dev mode. |
 | `web/tv/` | The 10-foot TV app: pairing QR, cast reveal, read-along player, D-pad choices, Story Shelf, Bedtime mode. |
 | `web/phone/` | Phone companion page: snap, name, theme, bedtime. No app install needed. |
-| `web/shared/` | Spatial navigation (`tv-focus.js`), remote normalisation, API client, Fredoka font (OFL). |
+| `web/shared/` | Spatial navigation (`tv-focus.js`), remote normalisation, API client, Fraunces, Caveat and Fredoka fonts (OFL). |
 | `backend/crayon/` | Pipeline, Strands agents, AWS wrappers, storage, HTTP router. Runs in the dev server, Lambda and AgentCore. |
 | `backend/agentcore_app.py` | AgentCore Runtime entry point (async task). |
 | `backend/lambda_handler.py` | Lambda Function URL entry point. |
 | `infra/` | One-command, idempotent boto3 deployment (S3, Guardrail, IAM, Lambda URL, Budget) and AgentCore deployment. |
 | `oss/firetv-webview-kit/` | MIT open-source kit extracted from this project (Open Source mini challenge). |
-| `docs/` | Feedback, friction log, Devpost text, demo script, store art. |
+| `scripts/` | Model probe (`list_models.py`), demo export, Fire TV helper (`firetv.sh`), brand asset generators. |
+| `docs/` | Architecture and story-flow diagrams (draw.io), feedback, friction log, Devpost text, demo script, store art. |
 
 ## Run it locally (no AWS needed)
 
@@ -76,6 +74,8 @@ Open the TV URL in a desktop browser (arrow keys and Enter act as the remote). S
 In mock mode the app uses placeholder backgrounds, a template story and timed highlighting, so you can work on the UI offline.
 
 ## Run it on a Fire TV
+
+Verified on a **Fire TV Stick (AFTSS), Fire OS 7.7.1.7, Amazon WebView 138**. A prebuilt release APK pointing at the cloud build is produced by the Gradle step below (`dist/crayon-cinema-firetv.apk`, not committed).
 
 1. Enable **Developer options → ADB debugging** on the Fire TV. To reveal Developer options, go to **Settings → My Fire TV → About** and select the device name 7 times.
 2. Build and install:
@@ -120,6 +120,15 @@ Models:
 node --test oss/firetv-webview-kit/test/tv-focus.test.js
 ```
 
+## Editing the diagrams
+
+The `.drawio` files are the source of truth. To re-export after editing in draw.io:
+
+```bash
+drawio -x -f png -e -s 2 -o docs/architecture.drawio.png docs/architecture.drawio
+drawio -x -f png -e -s 2 -o docs/story-flow.drawio.png docs/story-flow.drawio
+```
+
 ## License
 
-MIT, see [LICENSE](LICENSE). The Fredoka font is under the SIL Open Font License (`web/shared/fonts/OFL.txt`). All sound effects are generated with WebAudio, and all art is generated or drawn for this project.
+MIT, see [LICENSE](LICENSE). The Fraunces, Caveat and Fredoka fonts are under the SIL Open Font License (`web/shared/fonts/OFL*.txt`). All sound effects are generated with WebAudio, and all art is generated or drawn for this project.

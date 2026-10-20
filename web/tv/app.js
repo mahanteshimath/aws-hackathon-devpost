@@ -9,8 +9,13 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 /* ------------------------------------------------------------------ stage scaling (1920x1080 design) */
 const stage = $('#stage');
 function fit() {
-  const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
-  stage.style.transform = `translate(${(window.innerWidth - 1920 * s) / 2}px, ${(window.innerHeight - 1080 * s) / 2}px) scale(${s})`;
+  // Fire TV's WebView reports innerWidth in device pixels (1920 at dpr 2) while laying out at 960 CSS px,
+  // so measure the layout viewport instead.
+  const root = document.documentElement;
+  const w = root.clientWidth || window.innerWidth;
+  const h = root.clientHeight || window.innerHeight;
+  const s = Math.min(w / 1920, h / 1080);
+  stage.style.transform = `translate(${(w - 1920 * s) / 2}px, ${(h - 1080 * s) / 2}px) scale(${s})`;
 }
 window.addEventListener('resize', fit);
 fit();

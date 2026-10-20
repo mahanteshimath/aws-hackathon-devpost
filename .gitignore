@@ -42,3 +42,6 @@ infra/outputs.json
 # OS / IDE
 .DS_Store
 .snowflake/
+
+# Local video render workspace (final video lives in docs/media)
+brag-output/
