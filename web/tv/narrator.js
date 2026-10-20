@@ -11,7 +11,7 @@ export function renderReadAlong(el, text, words) {
   const spans = [];
   let cursor = 0;
   (words || []).forEach((w, i) => {
-    if (w.s > cursor) el.appendChild(document.createTextNode(text.slice(cursor, w.s)));
+    if (w.s > cursor) appendGap(el, text.slice(cursor, w.s), spans[spans.length - 1]);
     const span = document.createElement('span');
     span.className = 'w';
     span.textContent = text.slice(w.s, w.e);
@@ -20,8 +20,22 @@ export function renderReadAlong(el, text, words) {
     spans.push(span);
     cursor = w.e;
   });
-  if (cursor < text.length) el.appendChild(document.createTextNode(text.slice(cursor)));
+  if (cursor < text.length) appendGap(el, text.slice(cursor), spans[spans.length - 1]);
   return spans;
+}
+
+/** Punctuation right after a word ("fish,") dims together with that word instead of staying bright. */
+function appendGap(el, gap, prev) {
+  const m = prev ? /^\S+/.exec(gap) : null;
+  if (m) {
+    const tail = document.createElement('span');
+    tail.className = 'w-tail';
+    tail.textContent = m[0];
+    el.appendChild(tail);
+    prev.tail = tail;
+    gap = gap.slice(m[0].length);
+  }
+  if (gap) el.appendChild(document.createTextNode(gap));
 }
 
 function highlighter(spans) {
@@ -31,6 +45,7 @@ function highlighter(spans) {
     for (let i = 0; i < spans.length; i++) {
       spans[i].classList.toggle('on', i === idx);
       spans[i].classList.toggle('read', i < idx);
+      if (spans[i].tail) spans[i].tail.classList.toggle('read', i < idx);
     }
     last = idx;
   };

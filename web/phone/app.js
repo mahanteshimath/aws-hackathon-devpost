@@ -110,6 +110,7 @@ async function watch(storyId) {
     try {
       const doc = await api.story(storyId);
       $('#status-text').textContent = text[doc.status] || '';
+      markSteps(doc.status);
       if (doc.character) {
         $('#status-title').textContent = `Meet ${doc.character.name}!`;
         $('#status-art').src = assetUrl(doc.character.sprite_url);
@@ -119,6 +120,16 @@ async function watch(storyId) {
     await new Promise((r) => setTimeout(r, 1500));
   }
   $('#another').hidden = false;
+}
+
+function markSteps(status) {
+  const order = ['casting', 'cast', 'writing', 'rendering', 'ready'];
+  const at = order.indexOf(status);
+  document.querySelectorAll('#status-steps li').forEach((li) => {
+    const i = order.indexOf(li.dataset.step);
+    li.classList.toggle('done', at >= 0 && i < at);
+    li.classList.toggle('active', i === at);
+  });
 }
 
 $('#another').addEventListener('click', () => {

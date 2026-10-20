@@ -41,6 +41,7 @@ setBedtime(new Date().getHours() >= 19 || new Date().getHours() < 6);
 
 function show(name) {
   state.screen = name;
+  document.body.dataset.screen = name;
   document.querySelectorAll('.screen').forEach((s) => s.classList.toggle('active', s.id === name));
   const scope = name === 'player' ? $('#choice') : $(`#${name}`);
   focus.setRoot(scope, { focus: name !== 'player' });
@@ -94,8 +95,9 @@ async function loadShelf() {
       card.className = 'shelf-card story-card';
       card.setAttribute('data-focus', '');
       card.setAttribute('data-focus-group', 'shelf');
-      card.innerHTML = `<img class="cover" alt=""><img class="sprite" alt=""><span class="shelf-title"></span>`;
+      card.innerHTML = `<span class="cover-wrap"><img class="cover" alt=""><img class="sprite" alt=""></span><span class="shelf-title"></span>`;
       if (s.cover_url) card.querySelector('.cover').src = assetUrl(s.cover_url);
+      else card.querySelector('.cover').remove();
       if (s.sprite_url) card.querySelector('.sprite').src = assetUrl(s.sprite_url);
       card.querySelector('.shelf-title').textContent = s.title || s.hero_name;
       card.addEventListener('click', () => startStory(s.story_id, { fresh: false }));
@@ -219,7 +221,7 @@ async function reveal(token, fresh) {
 function confetti() {
   const box = $('#confetti');
   box.textContent = '';
-  const colours = ['#ff7a3d', '#3d8bff', '#35b86a', '#ffc93d', '#8e5be8', '#ff5d8f'];
+  const colours = ['#f2603a', '#2f6fe4', '#2e9e5b', '#ffc23a', '#7a4fd6', '#f0568c'];
   for (let i = 0; i < 36; i++) {
     const c = document.createElement('i');
     c.style.left = `${Math.random() * 100}%`;
@@ -316,6 +318,7 @@ function renderDots() {
   for (let i = 0; i < total; i++) {
     const d = document.createElement('i');
     if (i === state.pageIdx) d.className = 'on';
+    else if (i < state.pageIdx) d.className = 'done';
     dots.appendChild(d);
   }
 }

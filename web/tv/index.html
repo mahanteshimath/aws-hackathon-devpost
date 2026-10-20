@@ -7,68 +7,120 @@
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <!-- Shared drawings (crayon + icons), referenced with <use>. -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="crayon" viewBox="0 0 40 170">
+        <path d="M9 46 L17 9 Q20 2 23 9 L31 46 Z" fill="currentColor"/>
+        <path d="M21 6 L31 46 H23 Z" fill="#000" opacity=".16"/>
+        <rect x="6" y="44" width="28" height="122" rx="6" fill="currentColor"/>
+        <rect x="6" y="72" width="28" height="66" fill="#fff" opacity=".3"/>
+        <rect x="6" y="64" width="28" height="6" fill="#000" opacity=".18"/>
+        <rect x="6" y="140" width="28" height="6" fill="#000" opacity=".18"/>
+        <rect x="10" y="48" width="5" height="114" rx="2.5" fill="#fff" opacity=".28"/>
+      </symbol>
+      <symbol id="i-eye" viewBox="0 0 48 48"><path d="M4 24c6-10 13-15 20-15s14 5 20 15c-6 10-13 15-20 15S10 34 4 24z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><circle cx="24" cy="24" r="6.5" fill="currentColor"/></symbol>
+      <symbol id="i-scissors" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round"><circle cx="13" cy="36" r="6"/><circle cx="35" cy="36" r="6"/><path d="M17 31 38 6M31 31 10 6"/></g></symbol>
+      <symbol id="i-pencil" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"><path d="M9 39l3-11L32 8l8 8-20 20z"/><path d="M28 12l8 8M12 28l8 8"/></g></symbol>
+      <symbol id="i-palette" viewBox="0 0 48 48"><path d="M24 6C13 6 5 14 5 23.5 5 32 11.5 39 19 39c3 0 4-2 4-4s-2-3-2-5.5 2-4.5 5-4.5h6c6.5 0 12-4 12-10.5C44 12 35 6 24 6z" fill="none" stroke="currentColor" stroke-width="4" stroke-linejoin="round"/><circle cx="15" cy="21" r="3.2" fill="currentColor"/><circle cx="22" cy="14" r="3.2" fill="currentColor"/><circle cx="31" cy="14.5" r="3.2" fill="currentColor"/></symbol>
+      <symbol id="i-replay" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 24a14 14 0 1 0 4.5-10.3"/><path d="M13 6v8h8"/></g></symbol>
+      <symbol id="i-plus" viewBox="0 0 48 48"><path d="M24 9v30M9 24h30" fill="none" stroke="currentColor" stroke-width="5.5" stroke-linecap="round"/></symbol>
+      <symbol id="i-check" viewBox="0 0 48 48"><path d="M10 25l9 9 19-20" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    </defs>
+  </svg>
+
   <div id="stage">
     <div class="paper-grain" aria-hidden="true"></div>
     <div class="stars" aria-hidden="true"></div>
+    <div class="moon" aria-hidden="true"></div>
 
     <!-- HOME: pair a phone + Story Shelf -->
     <section id="home" class="screen" aria-label="Home">
       <header class="brand">
-        <div class="logo" aria-hidden="true"><span></span><span></span><span></span></div>
+        <svg class="logo" viewBox="0 0 150 180" aria-hidden="true">
+          <use href="#crayon" width="40" height="170" x="14" y="10" transform="rotate(-16 34 175)" style="color:var(--tomato)"/>
+          <use href="#crayon" width="40" height="170" x="96" y="10" transform="rotate(16 116 175)" style="color:var(--grass)"/>
+          <use href="#crayon" width="40" height="170" x="55" y="0" style="color:var(--cobalt)"/>
+        </svg>
         <div>
-          <h1>Crayon Cinema</h1>
+          <h1 class="wordmark">Crayon <span>Cinema</span></h1>
           <p class="tagline">Tonight's story stars whatever you drew today.</p>
         </div>
       </header>
+      <div id="mode-badge" class="mode-badge"></div>
 
-      <div class="pair-card">
-        <div class="qr-wrap"><img id="qr" alt="QR code to connect your phone"></div>
-        <ol class="steps">
-          <li><b>Draw</b> a hero on paper.</li>
-          <li><b>Scan</b> this code with a phone.</li>
-          <li><b>Snap</b> the drawing and watch it come alive!</li>
-        </ol>
-        <div class="pair-status">
-          <span id="phone-dot" class="dot"></span>
-          <span id="phone-status">Waiting for a phone…</span>
-          <span class="code">Code <b id="pair-code">····</b></span>
+      <div class="ticket">
+        <div class="ticket-stub">
+          <div class="qr-wrap"><img id="qr" alt="QR code to connect your phone"></div>
+          <p class="code-label">or type the code</p>
+          <p class="code"><b id="pair-code">····</b></p>
+        </div>
+        <div class="ticket-body">
+          <p class="kicker">Admit one hero</p>
+          <ol class="steps">
+            <li><i class="num" style="background:var(--tomato)">1</i><span><b>Draw</b> a hero on paper</span></li>
+            <li><i class="num" style="background:var(--cobalt)">2</i><span><b>Scan</b> the code with a phone</span></li>
+            <li><i class="num" style="background:var(--grass)">3</i><span><b>Snap</b> it and watch it come alive</span></li>
+          </ol>
+          <div class="pair-status">
+            <span id="phone-dot" class="dot"></span>
+            <span id="phone-status">Waiting for a phone…</span>
+          </div>
         </div>
       </div>
 
-      <div class="home-art" aria-hidden="true">
-        <div class="sheet"></div>
-        <img class="pop" src="./demo/sprite.png" alt="">
-        <div class="bubble">Draw me!</div>
-        <i class="crayon c1"></i><i class="crayon c2"></i>
+      <div class="theatre" aria-hidden="true">
+        <div class="marquee"><span>Now showing</span><b>your drawing!</b></div>
+        <div class="proscenium">
+          <div class="silver-screen"><img class="pop" src="./demo/sprite.png" alt=""></div>
+          <div class="curtain left"></div>
+          <div class="curtain right"></div>
+          <div class="valance"></div>
+          <div class="bubble">Draw me!</div>
+        </div>
+        <svg class="floor-crayons" viewBox="0 0 560 80">
+          <use href="#crayon" width="28" height="119" x="0" y="0" transform="translate(40 70) rotate(-78)" style="color:var(--sun)"/>
+          <use href="#crayon" width="28" height="119" x="0" y="0" transform="translate(400 74) rotate(-100)" style="color:var(--grape)"/>
+        </svg>
       </div>
 
       <div class="shelf">
-        <h2>Story Shelf</h2>
+        <h2>Story Shelf <span class="hand">every story you make lives here</span></h2>
         <div id="shelf-row" class="shelf-row">
           <button class="shelf-card demo-card" data-focus data-focus-default data-focus-group="shelf" id="demo-btn">
-            <span class="demo-art" aria-hidden="true"></span>
+            <span class="cover-wrap">
+              <img class="cover" src="./demo/p1.jpg" alt="">
+              <img class="sprite" src="./demo/sprite.png" alt="">
+              <span class="ribbon">Sample</span>
+            </span>
             <span class="shelf-title">Watch a sample story</span>
           </button>
         </div>
       </div>
-      <div id="mode-badge" class="mode-badge"></div>
     </section>
 
     <!-- MAKING: before the hero is cast -->
     <section id="making" class="screen" aria-label="Making your story">
       <div class="magic">
-        <div class="crayon-spinner" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+        <div class="crayon-wave" aria-hidden="true">
+          <svg viewBox="0 0 40 170" style="color:var(--tomato)"><use href="#crayon"/></svg>
+          <svg viewBox="0 0 40 170" style="color:var(--sun)"><use href="#crayon"/></svg>
+          <svg viewBox="0 0 40 170" style="color:var(--grass)"><use href="#crayon"/></svg>
+          <svg viewBox="0 0 40 170" style="color:var(--cobalt)"><use href="#crayon"/></svg>
+          <svg viewBox="0 0 40 170" style="color:var(--grape)"><use href="#crayon"/></svg>
+        </div>
         <h2>Bringing your hero to life…</h2>
-        <ul class="progress" id="progress">
-          <li data-step="casting">Looking at your drawing</li>
-          <li data-step="cast">Cutting it out of the paper</li>
-          <li data-step="writing">Writing tonight's story</li>
-          <li data-step="rendering">Painting the world</li>
-        </ul>
+        <p class="hand sub">The crayons are hard at work</p>
+        <ol class="progress" id="progress">
+          <li data-step="casting"><span class="frame"><svg><use href="#i-eye"/></svg></span><span class="cap">Looking at your drawing</span></li>
+          <li data-step="cast"><span class="frame"><svg><use href="#i-scissors"/></svg></span><span class="cap">Cutting it out</span></li>
+          <li data-step="writing"><span class="frame"><svg><use href="#i-pencil"/></svg></span><span class="cap">Writing the story</span></li>
+          <li data-step="rendering"><span class="frame"><svg><use href="#i-palette"/></svg></span><span class="cap">Painting the world</span></li>
+        </ol>
       </div>
     </section>
 
-    <!-- REVEAL: the drawing jumps off the paper -->
+    <!-- REVEAL: the curtains open and the drawing jumps off the paper -->
     <section id="reveal" class="screen" aria-label="Meet your hero">
       <div class="spotlight" aria-hidden="true"></div>
       <div class="confetti" id="confetti" aria-hidden="true"></div>
@@ -78,6 +130,9 @@
         <h2 id="reveal-name"></h2>
         <p id="reveal-greeting" class="read-along"></p>
       </div>
+      <div class="curtain left" aria-hidden="true"></div>
+      <div class="curtain right" aria-hidden="true"></div>
+      <div class="valance" aria-hidden="true"></div>
       <div class="hint" id="reveal-hint">Writing your story…</div>
     </section>
 
@@ -91,9 +146,10 @@
         <div class="page-dots" id="page-dots"></div>
       </div>
       <div class="painting" id="painting"><div class="brush" aria-hidden="true"></div><span>Painting the next page…</span></div>
-      <div class="controls-hint">OK pause · ◀ ▶ pages · Back home</div>
+      <div class="controls-hint"><kbd>OK</kbd> pause <i></i> <kbd>◀</kbd><kbd>▶</kbd> pages <i></i> <kbd>Back</kbd> home</div>
 
       <div class="choice" id="choice" aria-label="Choose what happens next">
+        <p class="hand choice-kicker">You decide!</p>
         <h2 id="choice-prompt"></h2>
         <div class="choice-row">
           <button class="choice-card" data-focus data-focus-default id="choice-a"><span class="arrow">◀</span><span class="label"></span></button>
@@ -104,21 +160,29 @@
 
     <!-- END -->
     <section id="end" class="screen" aria-label="The end">
+      <div class="curtain left" aria-hidden="true"></div>
+      <div class="curtain right" aria-hidden="true"></div>
+      <div class="valance" aria-hidden="true"></div>
       <div class="end-hero"><img id="end-sprite" alt=""></div>
       <h2 class="the-end">The End</h2>
       <p id="end-title" class="end-title"></p>
-      <p class="saved">Saved to your Story Shelf</p>
+      <p class="saved"><svg><use href="#i-check"/></svg>Saved to your Story Shelf</p>
       <div class="end-actions">
-        <button class="pill" data-focus data-focus-default id="again-btn">Read it again</button>
-        <button class="pill" data-focus id="new-btn">Make a new story</button>
+        <button class="pill primary" data-focus data-focus-default id="again-btn"><svg><use href="#i-replay"/></svg>Read it again</button>
+        <button class="pill" data-focus id="new-btn"><svg><use href="#i-plus"/></svg>Make a new story</button>
       </div>
     </section>
 
     <!-- ERROR -->
     <section id="oops" class="screen" aria-label="Something went wrong">
+      <svg class="tangle" viewBox="0 0 260 180" aria-hidden="true">
+        <path d="M30 120c40-90 120-100 150-40s-60 90-90 40 40-110 110-60 20 110-60 100" fill="none" stroke="var(--tomato)" stroke-width="12" stroke-linecap="round"/>
+        <path d="M60 60c60-30 140 0 120 60s-110 40-100-10 90-60 120 10" fill="none" stroke="var(--cobalt)" stroke-width="12" stroke-linecap="round" opacity=".9"/>
+        <path d="M40 90c30 40 110 70 170 20" fill="none" stroke="var(--sun)" stroke-width="12" stroke-linecap="round"/>
+      </svg>
       <h2>Oops! The crayons got tangled.</h2>
       <p id="oops-text">Let's try that drawing again.</p>
-      <button class="pill" data-focus data-focus-default id="oops-btn">Back to the start</button>
+      <button class="pill primary" data-focus data-focus-default id="oops-btn">Back to the start</button>
     </section>
   </div>
   <script type="module" src="./app.js"></script>

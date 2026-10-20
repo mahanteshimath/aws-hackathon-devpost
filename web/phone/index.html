@@ -3,22 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#fff6e5">
+  <meta name="theme-color" content="#fff3df">
   <title>Crayon Cinema · Phone</title>
   <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="crayon" viewBox="0 0 40 170">
+        <path d="M9 46 L17 9 Q20 2 23 9 L31 46 Z" fill="currentColor"/>
+        <path d="M21 6 L31 46 H23 Z" fill="#000" opacity=".16"/>
+        <rect x="6" y="44" width="28" height="122" rx="6" fill="currentColor"/>
+        <rect x="6" y="72" width="28" height="66" fill="#fff" opacity=".3"/>
+        <rect x="10" y="48" width="5" height="114" rx="2.5" fill="#fff" opacity=".28"/>
+      </symbol>
+      <symbol id="i-camera" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round"><path d="M6 16a4 4 0 0 1 4-4h6l3-5h10l3 5h6a4 4 0 0 1 4 4v20a4 4 0 0 1-4 4H10a4 4 0 0 1-4-4z"/><circle cx="24" cy="26" r="8"/></g></symbol>
+      <symbol id="i-sparkle" viewBox="0 0 48 48"><path d="M24 4c2 10 6 14 16 16-10 2-14 6-16 16-2-10-6-14-16-16 10-2 14-6 16-16zM39 30c1 5 3 7 7 8-4 1-6 3-7 8-1-5-3-7-7-8 4-1 6-3 7-8z" fill="currentColor"/></symbol>
+      <symbol id="i-rocket" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"><path d="M24 4c8 6 11 15 9 26H15C13 19 16 10 24 4z"/><circle cx="24" cy="18" r="4"/><path d="M15 30l-6 6 7 1M33 30l6 6-7 1M20 36l4 8 4-8"/></g></symbol>
+      <symbol id="i-palm" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 44c0-12 1-20 4-28"/><path d="M28 16C22 8 12 8 6 14c8-1 14 1 22 2zM28 16c4-8 12-11 18-8-6 1-12 4-18 8zM28 16c8-2 14 2 16 9-5-4-10-7-16-9zM28 16c-6 2-12 8-12 16 3-7 7-12 12-16z"/></g></symbol>
+      <symbol id="i-shell" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"><path d="M24 40C12 40 5 30 6 20 7 12 15 6 24 6s17 6 18 14c1 10-6 20-18 20z"/><path d="M24 40V10M24 40L14 12M24 40l10-28M24 40L8 22M24 40l16-18"/></g></symbol>
+      <symbol id="i-moon" viewBox="0 0 48 48"><path d="M30 6a18 18 0 1 0 12 30A16 16 0 0 1 30 6z" fill="currentColor"/></symbol>
+      <symbol id="i-tv" viewBox="0 0 48 48"><g fill="none" stroke="currentColor" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"><rect x="5" y="10" width="38" height="26" rx="4"/><path d="M17 42h14"/></g></symbol>
+    </defs>
+  </svg>
+
   <main>
     <header>
-      <div class="logo" aria-hidden="true"><span></span><span></span><span></span></div>
-      <h1>Crayon Cinema</h1>
+      <svg class="logo" viewBox="0 0 150 180" aria-hidden="true">
+        <use href="#crayon" width="40" height="170" x="14" y="10" transform="rotate(-16 34 175)" style="color:var(--tomato)"/>
+        <use href="#crayon" width="40" height="170" x="96" y="10" transform="rotate(16 116 175)" style="color:var(--grass)"/>
+        <use href="#crayon" width="40" height="170" x="55" y="0" style="color:var(--cobalt)"/>
+      </svg>
+      <h1>Crayon <span>Cinema</span></h1>
     </header>
 
     <!-- Code entry (if opened without a session link) -->
     <section id="join" class="card" hidden>
+      <div class="join-art" aria-hidden="true"><svg><use href="#i-tv"/></svg></div>
       <h2>Enter the code on your TV</h2>
+      <p class="lede">It's the 4 letters under the QR code.</p>
       <form id="join-form">
-        <input id="join-code" maxlength="4" autocomplete="off" autocapitalize="characters" placeholder="ABCD" aria-label="4-letter code">
+        <input id="join-code" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD" aria-label="4-letter code">
         <button class="primary" type="submit">Connect</button>
       </form>
       <p id="join-error" class="error" role="alert"></p>
@@ -30,7 +55,12 @@
       <label class="snap" id="snap-label">
         <input id="photo" type="file" accept="image/*" capture="environment">
         <img id="preview" alt="Your drawing" hidden>
-        <span id="snap-text"><b>Snap the drawing</b><br>Lay it flat in good light</span>
+        <span id="snap-text" class="snap-text">
+          <span class="snap-icon"><svg><use href="#i-camera"/></svg></span>
+          <b>Snap the drawing</b>
+          <span>Lay it flat in good light</span>
+        </span>
+        <span class="retake">Tap to retake</span>
       </label>
 
       <label class="field">Child's first name <small>(optional)</small>
@@ -39,13 +69,17 @@
 
       <fieldset class="themes">
         <legend>Where should the story go?</legend>
-        <label><input type="radio" name="theme" value="surprise" checked><span>✨ Surprise me</span></label>
-        <label><input type="radio" name="theme" value="space"><span>🚀 Space</span></label>
-        <label><input type="radio" name="theme" value="jungle"><span>🌴 Jungle</span></label>
-        <label><input type="radio" name="theme" value="ocean"><span>🐚 Ocean</span></label>
+        <label class="t-surprise"><input type="radio" name="theme" value="surprise" checked><span><svg><use href="#i-sparkle"/></svg>Surprise me</span></label>
+        <label class="t-space"><input type="radio" name="theme" value="space"><span><svg><use href="#i-rocket"/></svg>Space</span></label>
+        <label class="t-jungle"><input type="radio" name="theme" value="jungle"><span><svg><use href="#i-palm"/></svg>Jungle</span></label>
+        <label class="t-ocean"><input type="radio" name="theme" value="ocean"><span><svg><use href="#i-shell"/></svg>Ocean</span></label>
       </fieldset>
 
-      <label class="toggle"><input id="bedtime" type="checkbox"><span>🌙 Bedtime story (calm &amp; sleepy ending)</span></label>
+      <label class="toggle">
+        <span class="toggle-icon"><svg><use href="#i-moon"/></svg></span>
+        <span class="toggle-text"><b>Bedtime story</b><small>Calm, sleepy ending and a starry TV</small></span>
+        <input id="bedtime" type="checkbox"><span class="switch" aria-hidden="true"></span>
+      </label>
 
       <button id="go" class="primary big" disabled>Bring it to life</button>
       <p id="error" class="error" role="alert"></p>
@@ -54,9 +88,12 @@
 
     <!-- Status -->
     <section id="status" class="card" hidden>
-      <img id="status-art" alt="" class="status-art">
+      <div class="status-stage"><img id="status-art" alt="" class="status-art"></div>
       <h2 id="status-title">Look at the TV!</h2>
       <p id="status-text">Your hero is coming to life…</p>
+      <ol class="status-steps" id="status-steps" aria-hidden="true">
+        <li data-step="casting"></li><li data-step="cast"></li><li data-step="writing"></li><li data-step="rendering"></li>
+      </ol>
       <button id="another" class="primary" hidden>Make another story</button>
     </section>
   </main>
